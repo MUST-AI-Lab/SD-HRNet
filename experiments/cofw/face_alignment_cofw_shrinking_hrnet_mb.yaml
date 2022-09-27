@@ -1,0 +1,382 @@
+GPUS: (0, )
+WORKERS: 4
+PRINT_FREQ: 20
+
+DATASET:
+  DATASET: COFW
+  ROOT: './data/cofw/images'
+  TRAINSET: './data/cofw/COFW_train_color.mat'
+  TESTSET: './data/cofw/COFW_test_color.mat'
+  FLIP: true
+  SCALE_FACTOR: 0.25
+  ROT_FACTOR: 30
+MODEL:
+  NAME: 'shrinking_hrnet'
+  NUM_JOINTS: 29
+  INIT_WEIGHTS: true
+  PRETRAINED: ''
+  SIGMA: 1.5
+  IMAGE_SIZE:
+    - 256
+    - 256
+  HEATMAP_SIZE:
+    - 64
+    - 64
+  EXTRA:
+    FINAL_CONV_KERNEL: 1
+    STAGE2:
+      STG_ID: 2
+      NUM_MODULES: 1
+      NUM_BRANCHES: 4
+      BLOCK: mbconv
+      NUM_BLOCKS:
+        - 4
+        - 4
+        - 4
+        - 4
+      NUM_CHANNELS:
+        - 18
+        - 36
+        - 72
+        - 144
+      RETAINED_BLOCKS:
+        - 1
+        - 1
+        - 1
+        - 0
+      BLOCKS_ID:
+        - [ 0 ]
+        - [ 0 ]
+        - [ 0 ]
+        - [ ]
+      BETA_IN_CHANNELS:
+        - [ 64 ]
+        - [ 64 ]
+        - [ 64 ]
+      BETA_BRANCH_ID:
+        - [ 0 ]
+        - [ 0 ]
+        - [ 0 ]
+      BETA_WEIGHTS_ID:
+        - [ 0 ]
+        - [ 1 ]
+        - [ 2 ]
+        - [   ]
+      FUSE_METHOD: SUM
+    STAGE3:
+      NUM_MODULES: 1
+      NUM_BRANCHES: 4
+      BLOCK: mbconv
+      NUM_BLOCKS:
+        - 4
+        - 4
+        - 4
+        - 4
+      NUM_CHANNELS:
+        - 18
+        - 36
+        - 72
+        - 144
+      RETAINED_BLOCKS:
+        - 1
+        - 0
+        - 1
+        - 1
+      BLOCKS_ID:
+        - [ 1 ]
+        - [   ]
+        - [ 2 ]
+        - [ 2, 3 ]
+      BETA_IN_CHANNELS:
+        - [ 18 ]
+        - [ 36 ]
+        - [ 36, 72 ]
+      BETA_BRANCH_ID:
+        - [ 0 ]
+        - [ 1 ]
+        - [ 1, 2]
+      BETA_WEIGHTS_ID:
+        - [ 0 ]
+        - [   ]
+        - [ 2 ]
+        - [ 3, 3 ]
+      FUSE_METHOD: SUM
+    STAGE4:
+      NUM_MODULES: 1
+      NUM_BRANCHES: 4
+      BLOCK: mbconv
+      NUM_BLOCKS:
+        - 4
+        - 4
+        - 4
+        - 4
+      NUM_CHANNELS:
+        - 18
+        - 36
+        - 72
+        - 144
+      RETAINED_BLOCKS:
+        - 1
+        - 1
+        - 1
+        - 0
+      BLOCKS_ID:
+        - [ 5 ]
+        - [ 5, 8 ]
+        - [ 7 ]
+        - []
+      BETA_IN_CHANNELS:
+        - [ 18 ]
+        - [ 18, 144 ]
+        - [ 72 ]
+      BETA_BRANCH_ID:
+        - [ 0 ]
+        - [ 0, 2 ]
+        - [ 1 ]
+      BETA_WEIGHTS_ID:
+        - [ 0 ]
+        - [ 1, 1 ]
+        - [ 2 ]
+        - []
+      FUSE_METHOD: SUM
+    STAGE5:
+      NUM_MODULES: 1
+      NUM_BRANCHES: 4
+      BLOCK: mbconv
+      NUM_BLOCKS:
+        - 4
+        - 4
+        - 4
+        - 4
+      NUM_CHANNELS:
+        - 18
+        - 36
+        - 72
+        - 144
+      RETAINED_BLOCKS:
+        - 1
+        - 1
+        - 0
+        - 1
+      BLOCKS_ID:
+        - [ 9, 10 ]
+        - [ 11 ]
+        - []
+        - [ 10 ]
+      BETA_IN_CHANNELS:
+        - [ 18, 36 ]
+        - [ 72 ]
+        - [ 36 ]
+      BETA_BRANCH_ID:
+        - [ 0, 1 ]
+        - [ 2 ]
+        - [ 1 ]
+      BETA_WEIGHTS_ID:
+        - [ 0, 0 ]
+        - [ 1 ]
+        - []
+        - [ 3 ]
+      FUSE_METHOD: SUM
+    STAGE6:
+      NUM_MODULES: 1
+      NUM_BRANCHES: 4
+      BLOCK: mbconv
+      NUM_BLOCKS:
+        - 4
+        - 4
+        - 4
+        - 4
+      NUM_CHANNELS:
+        - 18
+        - 36
+        - 72
+        - 144
+      RETAINED_BLOCKS:
+        - 1
+        - 1
+        - 1
+        - 0
+      BLOCKS_ID:
+        - [ 13 ]
+        - [ 13, 16 ]
+        - [ 14, 16 ]
+        - []
+      BETA_IN_CHANNELS:
+        - [ 18 ]
+        - [ 18, 144 ]
+        - [ 36, 144 ]
+      BETA_BRANCH_ID:
+        - [ 0 ]
+        - [ 0, 2 ]
+        - [ 1, 2]
+      BETA_WEIGHTS_ID:
+        - [ 0 ]
+        - [ 1, 1 ]
+        - [ 2, 2 ]
+        - []
+      FUSE_METHOD: SUM
+    STAGE7:
+      NUM_MODULES: 1
+      NUM_BRANCHES: 4
+      BLOCK: mbconv
+      NUM_BLOCKS:
+        - 4
+        - 4
+        - 4
+        - 4
+      NUM_CHANNELS:
+        - 18
+        - 36
+        - 72
+        - 144
+      RETAINED_BLOCKS:
+        - 1
+        - 1
+        - 0
+        - 1
+      BLOCKS_ID:
+        - [ 17, 18, 19 ]
+        - [ 19 ]
+        - []
+        - [ 18 ]
+      BETA_IN_CHANNELS:
+        - [ 18, 36, 72 ]
+        - [ 72 ]
+        - [ 36 ]
+      BETA_BRANCH_ID:
+        - [ 0, 1, 2 ]
+        - [ 2 ]
+        - [ 1 ]
+      BETA_WEIGHTS_ID:
+        - [ 0, 0, 0 ]
+        - [ 1 ]
+        - []
+        - [ 3 ]
+      FUSE_METHOD: SUM
+    STAGE8:
+      NUM_MODULES: 1
+      NUM_BRANCHES: 4
+      BLOCK: mbconv
+      NUM_BLOCKS:
+        - 4
+        - 4
+        - 4
+        - 4
+      NUM_CHANNELS:
+        - 18
+        - 36
+        - 72
+        - 144
+      RETAINED_BLOCKS:
+        - 1
+        - 1
+        - 1
+        - 0
+      BLOCKS_ID:
+        - [ 24 ]
+        - [ 21, 22, 24 ]
+        - [ 24 ]
+        - []
+      BETA_IN_CHANNELS:
+        - [ 144 ]
+        - [ 18, 36, 144 ]
+        - [ 144 ]
+      BETA_BRANCH_ID:
+        - [ 2 ]
+        - [ 0, 1, 2 ]
+        - [ 2 ]
+      BETA_WEIGHTS_ID:
+        - [ 0 ]
+        - [ 1, 1, 1 ]
+        - [ 2 ]
+        - []
+      FUSE_METHOD: SUM
+    STAGE9:
+      NUM_MODULES: 1
+      NUM_BRANCHES: 4
+      BLOCK: mbconv
+      NUM_BLOCKS:
+        - 4
+        - 4
+        - 4
+        - 4
+      NUM_CHANNELS:
+        - 18
+        - 36
+        - 72
+        - 144
+      RETAINED_BLOCKS:
+        - 1
+        - 1
+        - 1
+        - 0
+      BLOCKS_ID:
+        - [ 25, 26, 27 ]
+        - [ 25, 26, 27 ]
+        - [ 27 ]
+        - []
+      BETA_IN_CHANNELS:
+        - [ 18, 36, 72 ]
+        - [ 18, 36, 72 ]
+        - [ 72 ]
+      BETA_BRANCH_ID:
+        - [ 0, 1, 2 ]
+        - [ 0, 1, 2 ]
+        - [ 2 ]
+      BETA_WEIGHTS_ID:
+        - [ 0, 0, 0 ]
+        - [ 1, 1, 1 ]
+        - [ 2 ]
+        - []
+      FUSE_METHOD: SUM
+    STAGE10:
+      NUM_MODULES: 1
+      NUM_BRANCHES: 4
+      BLOCK: mbconv
+      NUM_BLOCKS:
+        - 0
+        - 0
+        - 0
+        - 0
+      NUM_CHANNELS:
+        - 18
+        - 36
+        - 72
+        - 144
+      RETAINED_BLOCKS:
+        - 1
+        - 1
+        - 1
+        - 0
+      BLOCKS_ID:
+        - [ 29 ]
+        - [ 29, 30, 31 ]
+        - [ 31 ]
+        - []
+      BETA_IN_CHANNELS:
+        - [ 18 ]
+        - [ 18, 36, 72 ]
+        - [ 72 ]
+      BETA_BRANCH_ID:
+        - [ 0 ]
+        - [ 0, 1, 2 ]
+        - [ 2 ]
+      BETA_WEIGHTS_ID:
+        - [ 0 ]
+        - [ 1, 1, 1 ]
+        - [ 2 ]
+      FUSE_METHOD: SUM
+TRAIN:
+  BATCH_SIZE_PER_GPU: 16
+  SHUFFLE: true
+  BEGIN_EPOCH: 0
+  END_EPOCH: 60
+  RESUME: false
+  OPTIMIZER: 'adam'
+  LR: 0.0001
+  WD: 0.0
+  LR_STEP: [40, 50]
+  MOMENTUM: 0.0
+  NESTEROV: false
+TEST:
+  BATCH_SIZE_PER_GPU: 8
